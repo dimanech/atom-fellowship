@@ -1,0 +1,23 @@
+{
+	"name": "fellowship",
+	"main": "./lib/fellowship",
+	"version": "0.0.1",
+	"description": "Easily create fellowship of related files",
+	"keywords": [
+		"related",
+		"related files",
+		"split view",
+		"naviagation"
+	],
+	"activationCommands": {
+		"atom-workspace": [
+			"fellowship:openFellows"
+		]
+	},
+	"repository": "",
+	"license": "MIT",
+	"engines": {
+		"atom": ">=1.0.0 < 2.0.0"
+	},
+	"dependencies": {}
+}
