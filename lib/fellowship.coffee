@@ -106,7 +106,7 @@ module.exports = Fellowship =
       console.log "Fellowship not close any fellows"
 
   switchFellows: (item) ->
-    filePath = item.getURI?()
+    filePath = item?.getURI?()
 
     if !filePath || filePath == ''
       return
