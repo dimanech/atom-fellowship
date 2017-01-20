@@ -18,6 +18,7 @@ module.exports = Fellowship =
     @prepareWorkspace()
 
     @observerOnWillRemoveItem = atom.workspace.onWillDestroyPaneItem (e) => @closeFellows(e)
+    @observerOnWillSwitch = atom.workspace.onDidStopChangingActivePaneItem (item) => @switchFellows(item)
 
   deactivate: ->
     @subscriptions.dispose()
@@ -36,7 +37,7 @@ module.exports = Fellowship =
       @panes = @workspace.getPanes()
 
     if @panes.length == 2
-      @panes[1].splitRight()
+      @panes[1].splitDown()
       @panes = @workspace.getPanes()
 
     @paneLeft = @panes[0]
@@ -54,7 +55,7 @@ module.exports = Fellowship =
 
   openFellows: ->
     activeItem = @workspace.getActivePaneItem()
-    file = activeItem?.buffer.file
+    file = activeItem?.buffer?.file
     filePath = file?.path
 
     if !filePath || filePath == ''
@@ -77,7 +78,10 @@ module.exports = Fellowship =
 
   closeFellows: (e) ->
     item = e.item
-    filePath = item.getURI()
+    filePath = item.getURI?()
+
+    if !filePath || filePath == ''
+      return
 
     if filePath.match(/.*lib\/definitions.*.scss/)
       item1 = @paneRightTop.itemForURI(filePath.replace('lib/definitions', 'styleguide-src/sass/definitions').replace('_acdc-', '_'))
@@ -100,3 +104,17 @@ module.exports = Fellowship =
 #      @paneLeft.destroyItem(item2)
     else
       console.log "Fellowship not close any fellows"
+
+  switchFellows: (item) ->
+    filePath = item.getURI?()
+
+    if !filePath || filePath == ''
+      return
+
+    if filePath.match(/.*lib\/definitions.*.scss/)
+      item1 = @paneRightTop.itemForURI(filePath.replace('lib/definitions', 'styleguide-src/sass/definitions').replace('_acdc-', '_'))
+      item2 = @paneRightBottom.itemForURI(filePath.replace('lib/definitions', 'styleguide-src/sass/bindings').replace('_acdc-', '_'))
+      @paneRightTop.activateItem(item1)
+      @paneRightBottom.activateItem(item2)
+    else
+      console.log "Fellowship not switch any fellows"
