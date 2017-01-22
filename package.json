@@ -6,8 +6,9 @@
 	"keywords": [
 		"related",
 		"related files",
-		"split view",
-		"naviagation"
+		"split",
+		"naviagation",
+		"mvc"
 	],
 	"activationCommands": {
 		"atom-workspace": [
