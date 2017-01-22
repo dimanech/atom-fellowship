@@ -17,7 +17,7 @@
     ]
   },
   "repository": "https://github.com/dimanech/atom-fellowship",
-  "license": "MIT",
+  "license": "./LICENSE.md",
   "engines": {
     "atom": ">=1.0.0 < 2.0.0"
   },

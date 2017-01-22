@@ -7,7 +7,7 @@ Atom plugin for operating with group of related files as single file (opening, s
 ## Install
 
 ```
-apm install fellowship
+apm install atom-fellowship
 ```
 
 ## Configuration
@@ -24,24 +24,24 @@ Note: If you have problems with **escape sequences**, you can add this string ma
 
 Configuration for simple header-source project structure
 
-```js
-// ./inc/file.h
-// ./src/file.c
+```
+./inc/file.h
+./src/file.c
 ```
 
 will be like this:
 
 ```js
 ['.*inc.*.h', '.h', '']
-['.*scr.*.c', '.c', '']
+['.*src.*.c', '.c', '']
 ```
 
 Configuration for simple MVC project structure
 
-```js
-// ./project/controllers/file.js
-// ./project/views/file.xml
-// ./project/styles/file.css
+```
+./project/controllers/file.js
+./project/views/file.xml
+./project/styles/file.css
 ```
 
 will be like this:
@@ -54,10 +54,10 @@ will be like this:
 
 More complex structure with namespaces:
 
-```js
-// ./lib/controllers/re-file.js
-// ./prj/controllers/file.js
-// ./prj/styles/file.css
+```
+./lib/controllers/re-file.js
+./prj/controllers/file.js
+./prj/styles/file.css
 ```
 
 Will be like this:
