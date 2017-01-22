@@ -1,5 +1,7 @@
 # Atom Fellowship
 
+[![Code Climate](https://codeclimate.com/github/dimanech/atom-fellowship/badges/gpa.svg)](https://codeclimate.com/github/dimanech/atom-fellowship)
+
 > ‘I will take the Ring,’ he said, ‘though I do not know the way.’ J.R.R Tolkien
 
 Atom plugin for operating with group of related files as single file (opening, switchin, closing). You can open files in split view and easily navigate around all fellows.
