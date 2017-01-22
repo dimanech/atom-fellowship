@@ -12,6 +12,7 @@ module.exports = Fellowship =
   configFellows: null
   configSplitHoriz: null
   configOnlyFirstCloseFellows: null
+  configOnlyFirstSwitchFellows: null
   configFellowsLength: null
 
   config:
@@ -21,7 +22,7 @@ module.exports = Fellowship =
       properties:
         fellow1:
           title: 'Fellow 1'
-          description: 'Array of strings: [regexp to much, replace1, replace2...]'
+          description: 'Array of strings: [muchRegex, replaceStr, replaceStr]'
           order: 1
           type: 'array'
           default: ['.*lib\/definitions.*.scss', 'lib/definitions', '_acdc-']
@@ -43,15 +44,19 @@ module.exports = Fellowship =
             type: 'string'
     splitHoriz:
       title: 'Side by side layout'
-      description: 'Do we need to split panels horizontally'
       order: 2
       type: 'boolean'
       default: false
     onlyFirstCloseOthers:
-      title: 'Only first fellow trigger to close others'
+      title: 'Only first fellow close others'
       order: 3
       type: 'boolean'
       default: true
+    onlyFirstSwitchOthers:
+      title: 'Only first switch others'
+      order: 4
+      type: 'boolean'
+      default: false
 
   activate: ->
     @subscriptions = new CompositeDisposable
@@ -82,12 +87,8 @@ module.exports = Fellowship =
       @panes[0].splitRight()
       @panes = @workspace.getPanes()
 
-    if @panes.length is 2
-      if @configSplitHoriz then @panes[1].splitRight() else @panes[1].splitDown()
-      @panes = @workspace.getPanes()
-
-    if @panes.length > 2
-      while i <= @configFellowsLength - 3
+    if @panes.length >= 2
+      while i <= @configFellowsLength - 2
         if @configSplitHoriz then @panes[1].splitRight() else @panes[1].splitDown()
         i++
       @panes = @workspace.getPanes()
@@ -107,6 +108,7 @@ module.exports = Fellowship =
     @configFellowsLength = fellowConfig.length - 1
     @configSplitHoriz = atom.config.get('fellowship').splitHoriz
     @configOnlyFirstCloseFellows = atom.config.get('fellowship').onlyFirstCloseOthers
+    @configOnlyFirstSwitchFellows = atom.config.get('fellowship').onlyFirstSwitchOthers
 
   getFileTypeFromPath: (path) ->
     fileTypeNum = null
@@ -134,7 +136,7 @@ module.exports = Fellowship =
     current = @getFileTypeFromPath(filePath)
     i = 0
 
-    if !filePath or filePath is ''
+    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
       return
 
     if not @workspacePrepared
@@ -155,7 +157,7 @@ module.exports = Fellowship =
     current = if @configOnlyFirstCloseFellows then 0 else @getFileTypeFromPath(filePath)
     i = 0
 
-    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1
+    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
       return
 
     while i <= @configFellowsLength
@@ -169,10 +171,10 @@ module.exports = Fellowship =
 
   switchFellows: (item) ->
     filePath = item?.getURI?() or ''
-    current = @getFileTypeFromPath(filePath)
+    current = if @configOnlyFirstSwitchFellows then 0 else @getFileTypeFromPath(filePath)
     i = 0
 
-    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1
+    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
       return
 
     while i <= @configFellowsLength

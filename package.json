@@ -1,21 +1,22 @@
 {
 	"name": "fellowship",
 	"main": "./lib/fellowship",
-	"version": "0.0.1",
-	"description": "Easily create fellowship of related files",
+	"version": "0.0.2",
+	"description": "Atom plugin for operating with group of related files as single file (opening, switchin, closing)",
 	"keywords": [
 		"related",
 		"related files",
 		"split",
 		"naviagation",
-		"mvc"
+		"mvc",
+		"groupping"
 	],
 	"activationCommands": {
 		"atom-workspace": [
 			"fellowship:openFellows"
 		]
 	},
-	"repository": "",
+	"repository": "git@github.com:dimanech/atom-fellowship.git",
 	"license": "MIT",
 	"engines": {
 		"atom": ">=1.0.0 < 2.0.0"
