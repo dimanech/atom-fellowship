@@ -1,8 +1,8 @@
-# Fellowship
+# Atom Fellowship
 
 Atom plugin for opening related files in split view and easily navigate around all fellows.
 
->>> ‘I will take the Ring,’ he said, ‘though I do not know the way.’ J.R.R Tolkien
+> ‘I will take the Ring,’ he said, ‘though I do not know the way.’ J.R.R Tolkien
 
 ## Install
 
