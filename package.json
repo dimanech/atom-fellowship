@@ -16,7 +16,7 @@
 			"fellowship:openFellows"
 		]
 	},
-	"repository": "git@github.com:dimanech/atom-fellowship.git",
+	"repository": "https://github.com/dimanech/atom-fellowship",
 	"license": "MIT",
 	"engines": {
 		"atom": ">=1.0.0 < 2.0.0"
