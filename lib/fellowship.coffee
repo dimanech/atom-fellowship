@@ -8,7 +8,11 @@ module.exports = Fellowship =
   observerOnConfigUpdate: null
   workspace: null
   panes: null
-  fellowConfig: null
+  workspacePrepared: false
+  configFellows: null
+  configSplitHoriz: null
+  configOnlyFirstCloseFellows: null
+  configFellowsLength: null
 
   config:
     fellows:
@@ -43,16 +47,23 @@ module.exports = Fellowship =
       order: 2
       type: 'boolean'
       default: false
+    onlyFirstCloseOthers:
+      title: 'Only first fellow trigger to close others'
+      order: 3
+      type: 'boolean'
+      default: true
 
   activate: ->
     @subscriptions = new CompositeDisposable
-    @subscriptions.add atom.commands.add 'atom-workspace', 'fellowship:openFellows': => @openFellows()
+    @subscriptions.add atom.commands.add 'atom-workspace',
+      'fellowship:openFellows': => @openFellows()
 
     @workspace = atom.workspace
 
     @prepareConfig()
+    @prepareWorkspace()
 
-    @observerOnWillRemoveItem = atom.workspace.onWillDestroyPaneItem (e) => @closeFellows(e)
+    @observerOnWillRemoveItem = atom.workspace.onDidDestroyPaneItem (e) => @closeFellows(e)
     @observerOnWillSwitch = atom.workspace.onDidStopChangingActivePaneItem (item) => @switchFellows(item)
     @observerOnConfigUpdate = atom.config.observe 'fellowship', () => @prepareConfig()
 
@@ -61,36 +72,52 @@ module.exports = Fellowship =
     atom.config.set('core.destroyEmptyPanes', true)
 
   prepareWorkspace: ->
+    i = 0
     @panes = @workspace.getPanes()
 
-    if @panes.length == 0
+    if @panes.length is 0
       @workspace.open()
 
-    if @panes.length == 1
+    if @panes.length is 1
       @panes[0].splitRight()
       @panes = @workspace.getPanes()
 
-    if @panes.length == 2
-      if atom.config.get('fellowship').splitHoriz then @panes[1].splitRight() else @panes[1].splitDown()
+    if @panes.length is 2
+      if @configSplitHoriz then @panes[1].splitRight() else @panes[1].splitDown()
+      @panes = @workspace.getPanes()
+
+    if @panes.length > 2
+      while i <= @configFellowsLength - 3
+        if @configSplitHoriz then @panes[1].splitRight() else @panes[1].splitDown()
+        i++
       @panes = @workspace.getPanes()
 
     atom.config.set('core.destroyEmptyPanes', false)
 
+    @workspacePrepared = true
+
   prepareConfig: ->
     fellowConfig = []
     initialConfig = atom.config.get('fellowship').fellows
+
     for key, value of initialConfig
       fellowConfig.push(value)
-    @fellowConfig = fellowConfig
+
+    @configFellows = fellowConfig
+    @configFellowsLength = fellowConfig.length - 1
+    @configSplitHoriz = atom.config.get('fellowship').splitHoriz
+    @configOnlyFirstCloseFellows = atom.config.get('fellowship').onlyFirstCloseOthers
 
   getFileTypeFromPath: (path) ->
     fileTypeNum = null
     i = 0
-    for fellow in @fellowConfig
+
+    for fellow in @configFellows
       if path.match(fellow[0])
         fileTypeNum = i
         break
       i++
+
     return fileTypeNum
 
   openFile: (pane, uri) ->
@@ -103,75 +130,56 @@ module.exports = Fellowship =
   openFellows: ->
     activeItem = @workspace.getActivePaneItem()
     file = activeItem?.buffer?.file
-    filePath = file?.path
+    filePath = file?.path or ''
     current = @getFileTypeFromPath(filePath)
+    i = 0
 
-    if !filePath || filePath == ''
+    if !filePath or filePath is ''
       return
 
-    @prepareWorkspace()
+    if not @workspacePrepared
+      @prepareWorkspace()
 
-    for i in [0,1,2]
-      if i == current
+    while i <= @configFellowsLength
+      if i is current
         @moveFile(Fellowship.panes[current], activeItem)
       else
         @openFile(@panes[i], filePath.replace(
-            @fellowConfig[current][1], @fellowConfig[i][1]).replace(
-              @fellowConfig[current][2], @fellowConfig[i][2]))
+          @configFellows[current][1], @configFellows[i][1]).replace(
+          @configFellows[current][2], @configFellows[i][2]))
+      i++
 
   closeFellows: (e) ->
     item = e.item
     filePath = item.getURI?() or ''
+    current = if @configOnlyFirstCloseFellows then 0 else @getFileTypeFromPath(filePath)
+    i = 0
 
-    if !filePath || filePath == ''
+    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1
       return
 
-    if @getFileTypeFromPath(filePath) == 0
-      current = 0
-      for i in [1,2]
+    while i <= @configFellowsLength
+      if i isnt current
         item = @panes[i].itemForURI(
           filePath.replace(
-            @fellowConfig[current][1],
-            @fellowConfig[i][1]
-          ).replace(
-            @fellowConfig[current][2],
-            @fellowConfig[i][2]
-          )
-        )
-        Fellowship.panes[i].destroyItem(item)
-
-#    closes = (current) ->
-#      for i in [0,1,2]
-#        if i != current
-#          item = Fellowship.panes[i].itemForURI(
-#            filePath.replace(
-#              Fellowship.fellowConfig[current][1],
-#              Fellowship.fellowConfig[i][1]
-#            ).replace(
-#              Fellowship.fellowConfig[current][2],
-#              Fellowship.fellowConfig[i][2]
-#            )
-#          )
-#          Fellowship.panes[i].destroyItem(item)
-#
-#    closes(@getFileTypeFromPath(filePath))
+            @configFellows[current][1], @configFellows[i][1]).replace(
+            @configFellows[current][2], @configFellows[i][2]))
+        @panes[i].destroyItem(item)
+      i++
 
   switchFellows: (item) ->
     filePath = item?.getURI?() or ''
     current = @getFileTypeFromPath(filePath)
+    i = 0
 
-    if !filePath or filePath == '' or filePath.indexOf('atom:') != -1
+    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1
       return
 
-    for i in [0,1,2]
-      if i != current
+    while i <= @configFellowsLength
+      if i isnt current
         item = @panes[i].itemForURI(
           filePath.replace(
-            @fellowConfig[current][1],
-            @fellowConfig[i][1]
-          ).replace(
-            @fellowConfig[current][2],
-            @fellowConfig[i][2]
-          )
-        )
+            @configFellows[current][1], @configFellows[i][1]).replace(
+            @configFellows[current][2], @configFellows[i][2]))
         @panes[i].activateItem(item)
+      i++
