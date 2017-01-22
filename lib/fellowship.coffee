@@ -53,7 +53,7 @@ module.exports = Fellowship =
       type: 'boolean'
       default: true
     onlyFirstSwitchOthers:
-      title: 'Only first switch others'
+      title: 'Only first fellow switch others'
       order: 4
       type: 'boolean'
       default: false

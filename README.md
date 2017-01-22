@@ -7,7 +7,7 @@ Atom plugin for operating with group of related files as single file (opening, s
 ## Install
 
 ```
-apm install atom-fellowship
+apm install fellowship
 ```
 
 ## Configuration
