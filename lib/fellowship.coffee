@@ -32,8 +32,7 @@ module.exports = Fellowship =
           title: 'Fellow 2'
           order: 2
           type: 'array'
-          default: ['.*sass\/definitions.*.scss',
-            'styleguide-src/sass/definitions', '_']
+          default: ['.*sass\/definitions.*.scss', 'styleguide-src/sass/definitions', '_']
           items:
             type: 'string'
         fellow3:
@@ -150,7 +149,7 @@ module.exports = Fellowship =
       else
         @openFile(@panes[i], filePath.replace(
           @configFellows[current][1], @configFellows[i][1]).replace(
-            @configFellows[current][2], @configFellows[i][2]))
+          @configFellows[current][2], @configFellows[i][2]))
       i++
 
   closeFellows: (e) ->
@@ -167,7 +166,7 @@ module.exports = Fellowship =
         item = @panes[i].itemForURI(
           filePath.replace(
             @configFellows[current][1], @configFellows[i][1]).replace(
-              @configFellows[current][2], @configFellows[i][2]))
+            @configFellows[current][2], @configFellows[i][2]))
         @panes[i].destroyItem(item)
       i++
 
@@ -184,6 +183,6 @@ module.exports = Fellowship =
         item = @panes[i].itemForURI(
           filePath.replace(
             @configFellows[current][1], @configFellows[i][1]).replace(
-              @configFellows[current][2], @configFellows[i][2]))
+            @configFellows[current][2], @configFellows[i][2]))
         @panes[i].activateItem(item)
       i++

@@ -1,0 +1,28 @@
+# editorconfig.org
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = false
+indent_style = tab
+
+[*.{scss, sass, less, css}]
+indent_style = tab
+tab_width = 4
+
+[*.{html, haml}]
+indent_style = space
+tab_width = 4
+
+[*.{yml, yaml}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.coffee]
+indent_style = space
+indent_size = 2
