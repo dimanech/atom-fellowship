@@ -4,11 +4,15 @@
 
 Atom plugin for operating with group of related files as single file (opening, switchin, closing). You can open files in split view and easily navigate around all fellows.
 
-## Install
+## Installation
+
+Using `apm`:
 
 ```
 apm install atom-fellowship
 ```
+
+Or search for `atom-fellowship` in Atom settings view.
 
 ## Configuration
 
@@ -73,3 +77,15 @@ Will be like this:
 Press `ctrl-alt-f` to load plugin and open all related files.
 
 Close first pane file to close all related files, switch first pane files to switch all fellows.
+
+## Features
+
+* Open related files in split view
+* Synchronous tab switch
+* Synchronous tab close
+* Config for switch and close only with first file
+* Option for vertical side-by-side split view
+
+## License
+
+MIT © Dima Nechepurenko
