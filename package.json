@@ -1,25 +1,25 @@
 {
-	"name": "fellowship",
-	"main": "./lib/fellowship",
-	"version": "0.0.2",
-	"description": "Atom plugin for operating with group of related files as single file (opening, switchin, closing)",
-	"keywords": [
-		"related",
-		"related files",
-		"split",
-		"naviagation",
-		"mvc",
-		"groupping"
-	],
-	"activationCommands": {
-		"atom-workspace": [
-			"fellowship:openFellows"
-		]
-	},
-	"repository": "https://github.com/dimanech/atom-fellowship",
-	"license": "MIT",
-	"engines": {
-		"atom": ">=1.0.0 < 2.0.0"
-	},
-	"dependencies": {}
+  "name": "fellowship",
+  "main": "./lib/fellowship",
+  "version": "0.1.0",
+  "description": "Atom plugin for operating with group of related files as single file (opening, switchin, closing)",
+  "keywords": [
+    "related",
+    "related files",
+    "split",
+    "naviagation",
+    "mvc",
+    "groupping"
+  ],
+  "activationCommands": {
+    "atom-workspace": [
+      "fellowship:openFellows"
+    ]
+  },
+  "repository": "https://github.com/dimanech/atom-fellowship",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 < 2.0.0"
+  },
+  "dependencies": {}
 }
