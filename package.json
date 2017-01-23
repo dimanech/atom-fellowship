@@ -1,6 +1,6 @@
 {
   "name": "atom-fellowship",
-  "main": "./lib/fellowship",
+  "main": "./lib/atom-fellowship",
   "version": "0.3.3",
   "description": "Atom plugin for operating with group of related files as single file (opening, switchin, closing)",
   "keywords": [
@@ -13,7 +13,7 @@
   ],
   "activationCommands": {
     "atom-workspace": [
-      "fellowship:openFellows"
+      "atom-fellowship:openFellows"
     ]
   },
   "repository": "https://github.com/dimanech/atom-fellowship",

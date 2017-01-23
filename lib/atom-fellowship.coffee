@@ -1,7 +1,7 @@
 {CompositeDisposable} = require 'atom'
 fs = require 'fs'
 
-module.exports = Fellowship =
+module.exports = AtomFellowship =
   subscriptions: null
   observerOnWillRemoveItem: null
   observerOnWillSwitch: null
@@ -11,7 +11,7 @@ module.exports = Fellowship =
   panes: null
   workspacePrepared: false
   configFellows: null
-  configSplitHoriz: null
+  configSplitHorizontal: null
   configOnlyFirstCloseFellows: null
   configOnlyFirstSwitchFellows: null
   configFellowsLength: null
@@ -62,7 +62,7 @@ module.exports = Fellowship =
   activate: ->
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-workspace',
-      'fellowship:openFellows': => @openFellows()
+      'atom-fellowship:openFellows': => @openFellows()
 
     @workspace = atom.workspace
 
@@ -108,7 +108,7 @@ module.exports = Fellowship =
 
     @configFellows = fellowConfig
     @configFellowsLength = fellowConfig.length
-    @configSplitHoriz = config.get('atom-fellowship').splitHoriz
+    @configSplitHorizontal = config.get('atom-fellowship').splitHoriz
     @configOnlyFirstCloseFellows = config.get('atom-fellowship').onlyFirstCloseOthers
     @configOnlyFirstSwitchFellows = config.get('atom-fellowship').onlyFirstSwitchOthers
 
@@ -138,6 +138,8 @@ module.exports = Fellowship =
     current = @getFileTypeFromPath(filePath)
     i = 0
 
+    # TODO: do not open already opened file
+
     if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
       return
 
@@ -146,7 +148,7 @@ module.exports = Fellowship =
 
     while i <= @configFellowsLength - 1
       if i is current
-        @moveFile(Fellowship.panes[current], activeItem)
+        @moveFile(@panes[current], activeItem)
       else
         @openFile(@panes[i], filePath.replace(
           @configFellows[current][1], @configFellows[i][1]).replace(
