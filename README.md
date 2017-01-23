@@ -34,6 +34,8 @@ For configuring fellows you need to provide array with 3 values
 
 ### Examples
 
+#### Extension only
+
 Configuration for simple header-source project structure
 
 ```
@@ -47,6 +49,8 @@ will be like this:
 .*inc.*.h, /inc/, .h
 .*src.*.c, /src/, .c
 ```
+
+#### Directories and extensions
 
 Configuration for simple MVC project structure
 
@@ -64,12 +68,12 @@ will be like this:
 .*styles.*.css, /styles/, .css
 ```
 
-Not equal directories and namespace:
+#### Not equal directories and namespace
 
 ```
 ./lib/controllers/ns-file.js
-./prj/controllers/file.js
-./prj/views/file.js
+./prj/controllers/_file.js
+./prj/views/_file.js
 ```
 
 Will be like this:
@@ -80,7 +84,7 @@ Will be like this:
 .*prj\/views.*.js, prj/views/, _
 ```
 
-Not equal directories, namespace and different file types:
+#### Not equal directories namespace and different file types
 
 ```
 ./lib/controllers/foo-file.js
@@ -97,6 +101,12 @@ Will be like this:
 ``` 
 
 Check your config by opening `Application: Open your config` for any cases.
+
+This plugin cannot cover cases where
+
+* one fellow has namespace and other don't have one. Because `""` cannot replace `"ns-"`. Plugin will work only on namespaced files.
+
+#### More than 3 fellows
 
 If you need you can do even more by adding unlimited fellows via your config.cson
 
@@ -126,6 +136,10 @@ fellow4: [
 	".xml"
 ]
 ```
+
+#### More than 3 replace
+
+You can add more than 3 replace strings, but probably you don't need that.
 
 ## Getting started
 
