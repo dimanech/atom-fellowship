@@ -6,6 +6,7 @@ module.exports = Fellowship =
   observerOnWillRemoveItem: null
   observerOnWillSwitch: null
   observerOnConfigUpdate: null
+  observerOnWillDestroyPane: null
   workspace: null
   panes: null
   workspacePrepared: false
@@ -71,27 +72,27 @@ module.exports = Fellowship =
     @observerOnWillRemoveItem = @workspace.onDidDestroyPaneItem (e) => @closeFellows(e)
     @observerOnWillSwitch = @workspace.onDidStopChangingActivePaneItem (item) => @switchFellows(item)
     @observerOnConfigUpdate = atom.config.observe 'atom-fellowship', () => @prepareConfig()
+    @observerOnWillDestroyPane = @workspace.onWillDestroyPane () => @workspacePrepared = false
 
   deactivate: ->
     @subscriptions.dispose()
+
     atom.config.set('core.destroyEmptyPanes', true)
 
   prepareWorkspace: ->
-    i = 0
     @panes = @workspace.getPanes()
+    i = @panes.length
 
-    if @panes.length is 0
-      @workspace.open()
+    while i <= @configFellowsLength - 1
+      if i is 0
+#        @workspace.open()
+      else if i is 1
+        @panes[0].splitRight()
+      else if i >= 2
+        @panes[1].splitDown()
 
-    if @panes.length is 1
-      @panes[0].splitRight()
       @panes = @workspace.getPanes()
-
-    if @panes.length >= 2
-      while i <= @configFellowsLength - 2
-        if @configSplitHoriz then @panes[1].splitRight() else @panes[1].splitDown()
-        i++
-      @panes = @workspace.getPanes()
+      i++
 
     atom.config.set('core.destroyEmptyPanes', false)
 
