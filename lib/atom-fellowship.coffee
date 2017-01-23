@@ -71,8 +71,8 @@ module.exports = AtomFellowship =
 
     @observerOnWillRemoveItem = @workspace.onDidDestroyPaneItem (e) => @closeFellows(e)
     @observerOnWillSwitch = @workspace.onDidStopChangingActivePaneItem (item) => @switchFellows(item)
-    @observerOnConfigUpdate = atom.config.observe 'atom-fellowship', () => @prepareConfig()
     @observerOnWillDestroyPane = @workspace.onWillDestroyPane () => @workspacePrepared = false
+    @observerOnConfigUpdate = atom.config.observe 'atom-fellowship', () => @prepareConfig()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -138,7 +138,7 @@ module.exports = AtomFellowship =
     current = @getFileTypeFromPath(filePath)
     i = 0
 
-    # TODO: do not open already opened file
+    # TODO: do not open already opened file. This is bug when allFellow switch each others
 
     if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
       return
