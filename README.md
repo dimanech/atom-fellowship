@@ -26,15 +26,15 @@ Or search for `atom-fellowship` in Atom settings view.
 
 ## Configuration
 
-For configuring fellows you need to provide array with 3 values
+For configuring fellows you need to provide array with 3 (or more. See below) values:
 
-* String with Regex. Used to much needed file.
-* String for replace. Used to replace path in files. As usual this is folders names.
-* String for replace. Most cases this is some namespace. As usual this is file extension or namespace.
+1. String with Regex. Used to much needed file.
+2. String for replace. Used to replace path in files. As usual this is folders names.
+3. String for replace. Most cases this is some namespace. As usual this is file extension or namespace.
 
 ### Examples
 
-#### Much extension only
+#### Match extension only
 
 Configuration for simple header-source project structure
 
@@ -50,7 +50,7 @@ will be like this:
 .*src.*.c, .c
 ```
 
-#### Much directory and extension
+#### Match directory and extension
 
 Configuration for simple MVC project structure
 
@@ -68,7 +68,7 @@ will be like this:
 .*styles.*.css, /styles/, .css
 ```
 
-#### Much not equal directories and namespaces
+#### Match not equal directories and namespaces
 
 ```
 ./lib/controllers/ns-file.js
@@ -84,7 +84,7 @@ Configuration:
 .*prj\/views.*.js, prj/views/, _
 ```
 
-#### Much not equal directories namespace and different file types
+#### Match not equal directories namespace and different file types
 
 ```
 ./lib/controllers/foo-file.js
@@ -102,13 +102,9 @@ Configuration:
 
 Check your config by opening `Application: Open your config` for any cases.
 
-This plugin cannot cover cases where:
-
-* one fellow has namespace and other don't have one. Because `""` cannot replace `"ns-"`. Plugin will work only on namespaced files.
-
 #### More than 3 fellows
 
-If you need you can do even more by adding unlimited fellows via your config.cson
+If you need you can add more than 3 fellows via your config.cson. But not more than 9 because this is limitation of Fellowship of the Ring!
 
 ```cson
 fellow1: [
@@ -140,6 +136,13 @@ fellow4: [
 #### More than 3 replace
 
 You can add more than 3 replace strings, but probably you don't need that.
+
+## Limitations
+
+This plugin cannot cover cases where:
+
+* one fellow has namespace and other don't have one. Because `""` cannot replace `"ns-"`. Plugin will work only on namespaced files, and you can use settings to somehow work with this.
+* to be continued ;)
 
 ## Getting started
 
