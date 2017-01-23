@@ -34,7 +34,7 @@ For configuring fellows you need to provide array with 3 values
 
 ### Examples
 
-#### Extension only
+#### Much extension only
 
 Configuration for simple header-source project structure
 
@@ -46,11 +46,11 @@ Configuration for simple header-source project structure
 will be like this:
 
 ```
-.*inc.*.h, /inc/, .h
-.*src.*.c, /src/, .c
+.*inc.*.h, .h
+.*src.*.c, .c
 ```
 
-#### Directories and extensions
+#### Much directory and extension
 
 Configuration for simple MVC project structure
 
@@ -68,7 +68,7 @@ will be like this:
 .*styles.*.css, /styles/, .css
 ```
 
-#### Not equal directories and namespace
+#### Much not equal directories and namespaces
 
 ```
 ./lib/controllers/ns-file.js
@@ -76,7 +76,7 @@ will be like this:
 ./prj/views/_file.js
 ```
 
-Will be like this:
+Configuration:
 
 ```
 .*lib\/controllers/.*.js, lib/controllers/, _ns-
@@ -84,7 +84,7 @@ Will be like this:
 .*prj\/views.*.js, prj/views/, _
 ```
 
-#### Not equal directories namespace and different file types
+#### Much not equal directories namespace and different file types
 
 ```
 ./lib/controllers/foo-file.js
@@ -92,7 +92,7 @@ Will be like this:
 ./prj/styles/baz-file.css
 ```
 
-Will be like this:
+Configuration:
 
 ```
 .*lib\/controllers/.*.js, lib/controllers/, foo-, .js
@@ -102,7 +102,7 @@ Will be like this:
 
 Check your config by opening `Application: Open your config` for any cases.
 
-This plugin cannot cover cases where
+This plugin cannot cover cases where:
 
 * one fellow has namespace and other don't have one. Because `""` cannot replace `"ns-"`. Plugin will work only on namespaced files.
 
