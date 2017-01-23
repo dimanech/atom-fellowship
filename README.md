@@ -29,10 +29,8 @@ Or search for `atom-fellowship` in Atom settings view.
 For configuring fellows you need to provide array with 3 values
 
 * String with Regex. Used to much needed file.
-* String with that differs one fellow to another. Used to replace path in files. This should be delta of path trough all fellows.
-* Optional string for replace. Most cases this is namespace for file name.
-
-Note: If you have problems with **escape sequences**, you can add this string manually in `Application: Open you config`.
+* String for replace. Used to replace path in files. As usual this is folders names.
+* String for replace. Most cases this is some namespace. As usual this is file extension or namespace.
 
 ### Examples
 
@@ -45,9 +43,9 @@ Configuration for simple header-source project structure
 
 will be like this:
 
-```js
-['.*inc.*.h', '.h', '']
-['.*src.*.c', '.c', '']
+```
+.*inc.*.h, /inc/, .h
+.*src.*.c, /src/, .c
 ```
 
 Configuration for simple MVC project structure
@@ -60,26 +58,73 @@ Configuration for simple MVC project structure
 
 will be like this:
 
-```js
-['.*controllers.*.js', '/controllers/', '.js']
-['.*views.*.xml', '/views/', '.xml']
-['.*styles.*.css', '/styles/', '.css']
+```
+.*controllers.*.js, /controllers/, .js
+.*views.*.xml, /views/, .xml
+.*styles.*.css, /styles/, .css
 ```
 
-More complex structure with namespaces:
+Not equal directories and namespace:
 
 ```
-./lib/controllers/re-file.js
+./lib/controllers/ns-file.js
 ./prj/controllers/file.js
-./prj/styles/file.css
+./prj/views/file.js
 ```
 
 Will be like this:
 
-```js
-['.*lib\/controllers/.*.js', 'lib/controllers/', '.js']
-['.*prj\/controllers/.*.js', 'prj/controllers/', '.js']
-['.*prj\/styles.*.css', 'prj/styles/', '.css']
+```
+.*lib\/controllers/.*.js, lib/controllers/, _ns-
+.*prj\/controllers/.*.js, prj/controllers/, _
+.*prj\/views.*.js, prj/views/, _
+```
+
+Not equal directories, namespace and different file types:
+
+```
+./lib/controllers/foo-file.js
+./prj/controllers/bar-file.js
+./prj/styles/baz-file.css
+```
+
+Will be like this:
+
+```
+.*lib\/controllers/.*.js, lib/controllers/, foo-, .js
+.*prj\/controllers/.*.js, prj/controllers/, bar-, .js
+.*prj\/styles.*.css, prj/styles/, baz-, .css
+``` 
+
+Check your config by opening `Application: Open your config` for any cases.
+
+If you need you can do even more by adding unlimited fellows via your config.cson
+
+```cson
+fellow1: [
+	".*lib\\/controllers/.*.js"
+	"lib/controllers/ns-"
+	"foo-"
+	".js"
+]
+fellow2: [
+	".*prj\\/controllers/.*.js"
+	"prj/controllers/"
+	"bar-"
+	".js"
+]
+fellow3: [
+	".*prj\\/styles.*.css"
+	"prj/styles/"
+	"baz-"
+	".css"
+]
+fellow4: [
+	".*prj\\/views.*.xml"
+	"prj/views/"
+	"waldo-"
+	".xml"
+]
 ```
 
 ## Getting started

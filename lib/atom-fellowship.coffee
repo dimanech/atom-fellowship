@@ -124,6 +124,20 @@ module.exports = AtomFellowship =
 
     return fileTypeNum
 
+  getFellowPath: (activePath, activeIndex, processedIndex) ->
+    path = activePath
+    replaceStrLength = @configFellows[activeIndex].length - 1 # first is our regex string
+    i = 1
+
+    while i <= replaceStrLength
+      strFrom = @configFellows[activeIndex][i]
+      strTo = @configFellows[processedIndex][i]
+      if strFrom isnt undefined and strTo isnt undefined
+        path = path.replace(strFrom, strTo)
+      i++
+
+    return path
+
   openFile: (pane, uri) ->
     if fs.existsSync(uri)
       @workspace.openURIInPane(uri, pane)
@@ -150,9 +164,7 @@ module.exports = AtomFellowship =
       if i is current
         @moveFile(@panes[current], activeItem)
       else
-        @openFile(@panes[i], filePath.replace(
-          @configFellows[current][1], @configFellows[i][1]).replace(
-          @configFellows[current][2], @configFellows[i][2]))
+        @openFile(@panes[i], @getFellowPath(filePath, current, i))
       i++
 
   closeFellows: (e) ->
@@ -166,10 +178,7 @@ module.exports = AtomFellowship =
 
     while i <= @configFellowsLength - 1
       if i isnt current
-        item = @panes[i].itemForURI(
-          filePath.replace(
-            @configFellows[current][1], @configFellows[i][1]).replace(
-            @configFellows[current][2], @configFellows[i][2]))
+        item = @panes[i].itemForURI(@getFellowPath(filePath, current, i))
         @panes[i].destroyItem(item)
       i++
 
@@ -183,9 +192,6 @@ module.exports = AtomFellowship =
 
     while i <= @configFellowsLength - 1
       if i isnt current
-        item = @panes[i].itemForURI(
-          filePath.replace(
-            @configFellows[current][1], @configFellows[i][1]).replace(
-            @configFellows[current][2], @configFellows[i][2]))
+        item = @panes[i].itemForURI(@getFellowPath(filePath, current, i))
         @panes[i].activateItem(item)
       i++
