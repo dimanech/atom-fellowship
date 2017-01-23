@@ -39,8 +39,7 @@ module.exports = Fellowship =
           title: 'Fellow 3'
           order: 3
           type: 'array'
-          default: ['.*sass\/bindings.*.scss', 'styleguide-src/sass/bindings',
-            '_']
+          default: ['.*sass\/bindings.*.scss', 'styleguide-src/sass/bindings', '_']
           items:
             type: 'string'
     splitHoriz:
@@ -69,9 +68,9 @@ module.exports = Fellowship =
     @prepareConfig()
     @prepareWorkspace()
 
-    @observerOnWillRemoveItem = atom.workspace.onDidDestroyPaneItem (e) => @closeFellows(e)
-    @observerOnWillSwitch = atom.workspace.onDidStopChangingActivePaneItem (item) => @switchFellows(item)
-    @observerOnConfigUpdate = atom.config.observe 'fellowship', () => @prepareConfig()
+    @observerOnWillRemoveItem = @workspace.onDidDestroyPaneItem (e) => @closeFellows(e)
+    @observerOnWillSwitch = @workspace.onDidStopChangingActivePaneItem (item) => @switchFellows(item)
+    @observerOnConfigUpdate = atom.config.observe 'atom-fellowship', () => @prepareConfig()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -100,16 +99,17 @@ module.exports = Fellowship =
 
   prepareConfig: ->
     fellowConfig = []
-    initialConfig = atom.config.get('fellowship').fellows
+    config = atom.config
+    initialConfig = config.get('atom-fellowship').fellows
 
     for key, value of initialConfig
       fellowConfig.push(value)
 
     @configFellows = fellowConfig
-    @configFellowsLength = fellowConfig.length - 1
-    @configSplitHoriz = atom.config.get('fellowship').splitHoriz
-    @configOnlyFirstCloseFellows = atom.config.get('fellowship').onlyFirstCloseOthers
-    @configOnlyFirstSwitchFellows = atom.config.get('fellowship').onlyFirstSwitchOthers
+    @configFellowsLength = fellowConfig.length
+    @configSplitHoriz = config.get('atom-fellowship').splitHoriz
+    @configOnlyFirstCloseFellows = config.get('atom-fellowship').onlyFirstCloseOthers
+    @configOnlyFirstSwitchFellows = config.get('atom-fellowship').onlyFirstSwitchOthers
 
   getFileTypeFromPath: (path) ->
     fileTypeNum = null
@@ -143,7 +143,7 @@ module.exports = Fellowship =
     if not @workspacePrepared
       @prepareWorkspace()
 
-    while i <= @configFellowsLength
+    while i <= @configFellowsLength - 1
       if i is current
         @moveFile(Fellowship.panes[current], activeItem)
       else
@@ -161,7 +161,7 @@ module.exports = Fellowship =
     if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
       return
 
-    while i <= @configFellowsLength
+    while i <= @configFellowsLength - 1
       if i isnt current
         item = @panes[i].itemForURI(
           filePath.replace(
@@ -178,7 +178,7 @@ module.exports = Fellowship =
     if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
       return
 
-    while i <= @configFellowsLength
+    while i <= @configFellowsLength - 1
       if i isnt current
         item = @panes[i].itemForURI(
           filePath.replace(
