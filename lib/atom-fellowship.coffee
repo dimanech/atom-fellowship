@@ -23,24 +23,24 @@ module.exports = AtomFellowship =
       properties:
         fellow1:
           title: 'Fellow 1'
-          description: 'Array of strings: [muchRegex, replaceStr, replaceStr]'
+          description: 'Array of strings: [muchRegex, replaceStr, replaceStr, replaceStr...]'
           order: 1
           type: 'array'
-          default: ['.*lib\/definitions.*.scss', 'lib/definitions', '_acdc-']
+          default: ['.*controllers.*.js', '/controllers/', '.js']
           items:
             type: 'string'
         fellow2:
           title: 'Fellow 2'
           order: 2
           type: 'array'
-          default: ['.*sass\/definitions.*.scss', 'styleguide-src/sass/definitions', '_']
+          default: ['.*views.*.xml', '/views/', '.xml']
           items:
             type: 'string'
         fellow3:
           title: 'Fellow 3'
           order: 3
           type: 'array'
-          default: ['.*sass\/bindings.*.scss', 'styleguide-src/sass/bindings', '_']
+          default: ['.*styles.*.css', '/styles/', '.css']
           items:
             type: 'string'
     splitHoriz:
