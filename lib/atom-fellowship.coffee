@@ -152,18 +152,16 @@ module.exports = AtomFellowship =
 
     # TODO: do not open already opened file. This is bug when allFellow switch each others
 
-    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
-      return
-
     if not @workspacePrepared
       @prepareWorkspace()
 
-    while i <= @configFellowsLength - 1
-      if i is current
-        @moveFile(@panes[current], activeItem)
-      else
-        @openFile(@panes[i], @getFellowPath(filePath, current, i))
-      i++
+    if filePath isnt undefined and current isnt null
+      while i <= @configFellowsLength - 1
+        if i is current
+          @moveFile(@panes[current], activeItem)
+        else
+          @openFile(@panes[i], @getFellowPath(filePath, current, i))
+        i++
 
   closeFellows: (e) ->
     item = e.item
@@ -171,25 +169,21 @@ module.exports = AtomFellowship =
     current = if @configOnlyFirstCloseFellows then 0 else @getFileTypeFromPath(filePath)
     i = 0
 
-    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
-      return
-
-    while i <= @configFellowsLength - 1
-      if i isnt current
-        item = @panes[i].itemForURI(@getFellowPath(filePath, current, i))
-        @panes[i].destroyItem(item)
-      i++
+    if filePath isnt undefined and current isnt null
+      while i <= @configFellowsLength - 1
+        if i isnt current
+          item = @panes[i].itemForURI(@getFellowPath(filePath, current, i))
+          @panes[i].destroyItem(item)
+        i++
 
   switchFellows: (item) ->
     filePath = item?.getURI?() or ''
     current = if @configOnlyFirstSwitchFellows then 0 else @getFileTypeFromPath(filePath)
     i = 0
 
-    if !filePath or filePath is '' or filePath.indexOf('atom:') isnt -1 or current is null
-      return
-
-    while i <= @configFellowsLength - 1
-      if i isnt current
-        item = @panes[i].itemForURI(@getFellowPath(filePath, current, i))
-        @panes[i].activateItem(item)
-      i++
+    if filePath isnt undefined and current isnt null
+      while i <= @configFellowsLength - 1
+        if i isnt current
+          item = @panes[i].itemForURI(@getFellowPath(filePath, current, i))
+          @panes[i].activateItem(item)
+        i++
