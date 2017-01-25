@@ -84,9 +84,7 @@ module.exports = AtomFellowship =
     i = @panes.length
 
     while i <= @configFellowsLength - 1
-      if i is 0
-#        @workspace.open()
-      else if i is 1
+      if i is 1
         @panes[0].splitRight()
       else if i >= 2
         @panes[1].splitDown()

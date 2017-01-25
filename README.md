@@ -137,6 +137,25 @@ fellow4: [
 
 You can add more than 3 replace strings, but probably you don't need that.
 
+### Windows machines
+
+Please note that Windows FS paths should be like this:
+
+In Atom config:
+
+```
+*some\\path*.scss
+some\replace
+```
+
+In cson should be:
+
+```cson
+".*lib\\\\definitions.*.scss"
+"lib\\definitions"
+"_acdc-"
+```
+
 ## Limitations
 
 This plugin cannot cover cases where:
