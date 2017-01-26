@@ -1,7 +1,7 @@
 {
   "name": "atom-fellowship",
   "main": "./lib/atom-fellowship",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Atom plugin for operating with group of related files as single file (opening, switchin, closing)",
   "keywords": [
     "related",
