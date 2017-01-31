@@ -1,18 +1,14 @@
-'context-menu':
-  'atom-text-editor': [
-    {
-      'label': 'Open related files'
-      'command': 'atom-fellowship:openFellows'
-    }
-  ]
 'menu': [
   {
     'label': 'Packages'
     'submenu': [
-      'label': 'Fellowship'
+      'label': 'Atom fellowship'
       'submenu': [{
           'label': 'Open related files'
           'command': 'atom-fellowship:openFellows'
+      }, {
+          'label': 'Create related files'
+          'command': 'atom-fellowship:createFellows'
       }]
     ]
   }

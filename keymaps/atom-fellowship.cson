@@ -1,2 +1,3 @@
 'atom-workspace':
   'shift-alt-F': 'atom-fellowship:openFellows'
+  'shift-alt-C': 'atom-fellowship:createFellows'

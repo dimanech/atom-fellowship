@@ -45,6 +45,7 @@ module.exports = AtomFellowship =
             type: 'string'
     splitHoriz:
       title: 'Side by side layout'
+      description: 'Restart required'
       order: 2
       type: 'boolean'
       default: false
@@ -58,11 +59,17 @@ module.exports = AtomFellowship =
       order: 4
       type: 'boolean'
       default: false
+    openEvenIfNotExist:
+      title: 'Create fellows if they not exist'
+      order: 5
+      type: 'boolean'
+      default: false
 
   activate: ->
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-workspace',
-      'atom-fellowship:openFellows': => @openFellows()
+      'atom-fellowship:openFellows': => @openFellows(),
+      'atom-fellowship:createFellows': => @createFellows()
 
     @workspace = atom.workspace
 
@@ -109,6 +116,7 @@ module.exports = AtomFellowship =
     @configSplitHorizontal = config.get('atom-fellowship').splitHoriz
     @configOnlyFirstCloseFellows = config.get('atom-fellowship').onlyFirstCloseOthers
     @configOnlyFirstSwitchFellows = config.get('atom-fellowship').onlyFirstSwitchOthers
+    @configOpenEvenIfNotExist = config.get('atom-fellowship').openEvenIfNotExist
 
   getFileTypeFromPath: (path) ->
     fileTypeNum = null
@@ -136,14 +144,16 @@ module.exports = AtomFellowship =
 
     return path
 
-  openFile: (pane, uri) ->
-    if fs.existsSync(uri)
+  openFile: (pane, uri, createFile) ->
+    if @configOpenEvenIfNotExist or createFile
+      @workspace.openURIInPane(uri, pane)
+    else if fs.existsSync(uri)
       @workspace.openURIInPane(uri, pane)
 
   moveFile: (pane, item) ->
     @workspace.getActivePane().moveItemToPane(item, pane)
 
-  openFellows: ->
+  openFellows: (createFile) ->
     activeItem = @workspace.getActivePaneItem()
     file = activeItem?.buffer?.file
     filePath = file?.path or ''
@@ -160,7 +170,7 @@ module.exports = AtomFellowship =
         if i is current
           @moveFile(@panes[current], activeItem)
         else
-          @openFile(@panes[i], @getFellowPath(filePath, current, i))
+          @openFile(@panes[i], @getFellowPath(filePath, current, i), createFile)
         i++
 
   closeFellows: (e) ->
@@ -187,3 +197,6 @@ module.exports = AtomFellowship =
           item = @panes[i].itemForURI(@getFellowPath(filePath, current, i))
           @panes[i].activateItem(item)
         i++
+
+  createFellows: ->
+    @openFellows(true)
