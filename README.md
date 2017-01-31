@@ -4,6 +4,8 @@
 
 > ‘I will take the Ring,’ he said, ‘though I do not know the way.’ J.R.R Tolkien
 
+![Fellowship screencast](https://raw.github.com/dimanech/atom-fellowship/master/fellowship-screencast.gif)
+
 Atom plugin for operating with group of related files as single file (opening, switchin, closing). You can open files in split view and easily navigate around all fellows.
 
 ## Features
@@ -165,7 +167,7 @@ This plugin cannot cover cases where:
 
 ## Getting started
 
-* Press `shift-alt-F` to load plugin and open all related files
+* Press `shift-alt-F` to load plugin and open all related files or `shift-alt-C` to create fellows
 * Close first pane file to close all related files
 * Switch first pane files to switch all fellows
 
@@ -173,11 +175,13 @@ This plugin cannot cover cases where:
 
 * `splitHoriz:false` side by side layout
 * `onlyFirstCloseOthers:true` only first fellow close others
-* `onlyFirstSwitchOthers:false` only first fellow switch others 
+* `onlyFirstSwitchOthers:false` only first fellow switch others
+* `openEvenIfNotExist:false` create fellows if they not exist on open
 
 ## Keyboard Shortcut
 
 `atom-fellowship:openFellows`, default `shift-alt-F`: load plugin and open all related files
+`atom-fellowship:createFellows`, default `shift-alt-C`: load plugin and create all related files
 
 ## Help out
 

@@ -8,12 +8,14 @@ module.exports = AtomFellowship =
   observerOnConfigUpdate: null
   observerOnWillDestroyPane: null
   workspace: null
+  config: null
   panes: null
   workspacePrepared: false
   configFellows: null
   configSplitHorizontal: null
   configOnlyFirstCloseFellows: null
   configOnlyFirstSwitchFellows: null
+  configOpenEvenIfNotExist: null
   configFellowsLength: null
 
   config:
@@ -72,6 +74,7 @@ module.exports = AtomFellowship =
       'atom-fellowship:createFellows': => @createFellows()
 
     @workspace = atom.workspace
+    @config = atom.config
 
     @prepareConfig()
     @prepareWorkspace()
@@ -79,18 +82,19 @@ module.exports = AtomFellowship =
     @observerOnWillRemoveItem = @workspace.onDidDestroyPaneItem (e) => @closeFellows(e)
     @observerOnWillSwitch = @workspace.onDidStopChangingActivePaneItem (item) => @switchFellows(item)
     @observerOnWillDestroyPane = @workspace.onWillDestroyPane () => @workspacePrepared = false
-    @observerOnConfigUpdate = atom.config.observe 'atom-fellowship', () => @prepareConfig()
+    @observerOnConfigUpdate = @config.observe 'atom-fellowship', () => @prepareConfig()
 
   deactivate: ->
     @subscriptions.dispose()
-
-    atom.config.set('core.destroyEmptyPanes', true)
+    @config.set('core.destroyEmptyPanes', true)
 
   prepareWorkspace: ->
     @panes = @workspace.getPanes()
     i = @panes.length
 
     while i <= @configFellowsLength - 1
+      if i is 0
+        @workspace.open()
       if i is 1
         @panes[0].splitRight()
       else if i >= 2
@@ -99,24 +103,22 @@ module.exports = AtomFellowship =
       @panes = @workspace.getPanes()
       i++
 
-    atom.config.set('core.destroyEmptyPanes', false)
-
+    @config.set('core.destroyEmptyPanes', false)
     @workspacePrepared = true
 
   prepareConfig: ->
     fellowConfig = []
-    config = atom.config
-    initialConfig = config.get('atom-fellowship').fellows
+    initialConfig = @config.get('atom-fellowship').fellows
 
     for key, value of initialConfig
       fellowConfig.push(value)
 
     @configFellows = fellowConfig
     @configFellowsLength = fellowConfig.length
-    @configSplitHorizontal = config.get('atom-fellowship').splitHoriz
-    @configOnlyFirstCloseFellows = config.get('atom-fellowship').onlyFirstCloseOthers
-    @configOnlyFirstSwitchFellows = config.get('atom-fellowship').onlyFirstSwitchOthers
-    @configOpenEvenIfNotExist = config.get('atom-fellowship').openEvenIfNotExist
+    @configSplitHorizontal = @config.get('atom-fellowship').splitHoriz
+    @configOnlyFirstCloseFellows = @config.get('atom-fellowship').onlyFirstCloseOthers
+    @configOnlyFirstSwitchFellows = @config.get('atom-fellowship').onlyFirstSwitchOthers
+    @configOpenEvenIfNotExist = @config.get('atom-fellowship').openEvenIfNotExist
 
   getFileTypeFromPath: (path) ->
     fileTypeNum = null
@@ -162,9 +164,6 @@ module.exports = AtomFellowship =
 
     # TODO: do not open already opened file. This is bug when allFellow switch each others
 
-    if not @workspacePrepared
-      @prepareWorkspace()
-
     if filePath isnt undefined and current isnt null
       while i <= @configFellowsLength - 1
         if i is current
@@ -172,6 +171,8 @@ module.exports = AtomFellowship =
         else
           @openFile(@panes[i], @getFellowPath(filePath, current, i), createFile)
         i++
+    else
+      atom.notifications.addInfo('Fellowship did not find anything')
 
   closeFellows: (e) ->
     item = e.item
