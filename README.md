@@ -6,7 +6,7 @@
 
 ![Fellowship screencast](https://raw.github.com/dimanech/atom-fellowship/master/fellowship-screencast.gif)
 
-Atom plugin for operating with group of related files as single file (opening, switchin, closing). You can open files in split view and easily navigate around all fellows.
+Atom plugin for operating with group of related files as single file (open, switch, close, create). You can open files in split view and easily navigate around all fellows.
 
 ## Features
 
@@ -15,6 +15,7 @@ Atom plugin for operating with group of related files as single file (opening, s
 * Synchronous tab close
 * Config for switch and close only with first file
 * Option for vertical side-by-side split view
+* Option to create files if they do not exist
 
 ## Installation
 
@@ -28,11 +29,13 @@ Or search for `atom-fellowship` in Atom settings view.
 
 ## Configuration
 
+This plugin useless without configuration.
+
 For configuring fellows you need to provide array with 3 (or more. See below) values:
 
-1. String with Regex. Used to much needed file.
-2. String for replace. Used to replace path in files. As usual this is folders names.
-3. String for replace. Most cases this is some namespace. As usual this is file extension or namespace.
+1. **String with Regex**. Used to much needed file.
+2. **String for replace**. Used to replace path in files. As usual this is folders names.
+3. **String for replace**. Most cases this is some namespace. As usual this is file extension or namespace.
 
 ### Examples
 
@@ -70,7 +73,7 @@ will be like this:
 .*styles.*.css, /styles/, .css
 ```
 
-#### Match not equal directories and namespaces
+#### Match not equal directories and namespace
 
 ```
 ./lib/controllers/ns-file.js
@@ -106,7 +109,7 @@ Check your config by opening `Application: Open your config` for any cases.
 
 #### More than 3 fellows
 
-If you need you can add more than 3 fellows via your config.cson. But not more than 9 because this is limitation of Fellowship of the Ring!
+If you need you can add more than 3 fellows via your `config.cson`. But not more than 9 because this is limitation of Fellowship of the Ring!
 
 ```cson
 fellow1: [
@@ -135,13 +138,15 @@ fellow4: [
 ]
 ```
 
+Seriously you could not comfortably work more with 4 splitted views.
+
 #### More than 3 replace
 
-You can add more than 3 replace strings, but probably you don't need that.
+You can provide more than 3 replace strings (unlimited potentially), but probably *you don't need that*.
 
 ### Windows machines
 
-Please note that Windows FS paths should be like this:
+Please note that **Windows** FS paths should be like this:
 
 In Atom config:
 
@@ -153,17 +158,17 @@ some\replace
 In cson should be:
 
 ```cson
-".*lib\\\\definitions.*.scss"
-"lib\\definitions"
-"_acdc-"
+".*some\\\\path.*.scss"
+"some\\replace"
+"_ns-"
 ```
 
 ## Limitations
 
 This plugin cannot cover cases where:
 
-* one fellow has namespace and other don't have one. Because `""` cannot replace `"ns-"`. Plugin will work only on namespaced files, and you can use settings to somehow work with this.
-* to be continued ;)
+* obviously plugin can match only files with same part in the name
+* one fellow has namespace and other don't have one. Because `""` cannot replace `"ns-"`. Plugin will work only on namespaced files, and you can use settings to somehow work with this
 
 ## Getting started
 
@@ -181,11 +186,11 @@ This plugin cannot cover cases where:
 ## Keyboard Shortcut
 
 `atom-fellowship:openFellows`, default `shift-alt-F`: load plugin and open all related files
-`atom-fellowship:createFellows`, default `shift-alt-C`: load plugin and create all related files
+`atom-fellowship:createFellows`, default `shift-alt-C`: load plugin, open all related files and create if someone not exist
 
 ## Help out
 
-Work on this plugin is still in progress, any help is welcome.
+Any help is welcome 🙏
 
 ## License
 
